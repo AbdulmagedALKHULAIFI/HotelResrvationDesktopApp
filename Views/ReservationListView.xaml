@@ -18,7 +18,62 @@
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" Text="View Reservations list" Style="{StaticResource Header}"/>
+            <TextBlock 
+                Grid.Column="0" 
+                Text="View Reservations list" 
+                Style="{StaticResource Header}"/>
+
+            <!-- button -->
+            <Button 
+                Grid.Column="1" 
+                Margin="10 0 0 0"
+                Content="Make Reservation"
+                Command="{Binding MakeReservationCommand}"
+                />
+
         </Grid>
+        <!-- Resvations List-->
+        <ListView Grid.Row="1" Margin="0 25 0 0">
+            <ListViewItem />
+            <ListViewItem />
+            <ListViewItem />
+            <ListView.View>
+                <GridView>
+
+                    <GridViewColumn Header="Room ID">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="12" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Header="Username">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="Abdulmaged" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Header="Start date">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="12/12/2022" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Header="End date">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="12/01/2023" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </UserControl>

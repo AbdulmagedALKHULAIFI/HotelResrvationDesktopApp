@@ -35,7 +35,7 @@ namespace HotelResrvationDesktopApp
                     new DateTime(2000, 1, 10)
                     ));
 
-                IEnumerable<Reservation> reservations = hotel.GetReservationsForUser("Brevent");
+                IEnumerable<Reservation> reservations = hotel.GetallReservations();
             }
             catch (ReservationConflictException ex)
             {
