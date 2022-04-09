@@ -11,10 +11,10 @@ namespace HotelResrvationDesktopApp.ViewModels
     {
         private Reservation _reservation;
 
-        public string Room => _reservation.Room.ToString();
+        public string RoomID => _reservation.Room.ToString();
         public string Username => _reservation.Username;
-        public DateTime StartTime => _reservation.StartTime;
-        public DateTime EndTime => _reservation.EndTime;
+        public string StartDate => _reservation.StartTime.ToString("d");
+        public string EndDate => _reservation.EndTime.ToString("d");
 
         public ReservationViewModel(Reservation reservation)
         {

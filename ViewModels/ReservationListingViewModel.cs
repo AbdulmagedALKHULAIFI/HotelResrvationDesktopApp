@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HotelResrvationDesktopApp.Models;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -10,13 +11,19 @@ namespace HotelResrvationDesktopApp.ViewModels
 {
     class ReservationListingViewModel : ViewModelBase
     {
-        //ToDo: I stopped in the 3rd video, 9th minute 
+        
         private readonly ObservableCollection<ReservationViewModel> _reservations;
+
+        public IEnumerable<ReservationViewModel> Reservations => _reservations;
         public ICommand MakeReservationCommand { get;  }
 
         public ReservationListingViewModel()
         {
+            _reservations = new ObservableCollection<ReservationViewModel>();
 
+            _reservations.Add(new ReservationViewModel(new Reservation(new Room(1, 2), "Majid", DateTime.UtcNow, DateTime.UtcNow)));
+            _reservations.Add(new ReservationViewModel(new Reservation(new Room(2, 3), "Kévin", DateTime.UtcNow, DateTime.UtcNow)));
+            _reservations.Add(new ReservationViewModel(new Reservation(new Room(5, 4), "Rafa", DateTime.UtcNow, DateTime.UtcNow)));
         }
     }
 }
