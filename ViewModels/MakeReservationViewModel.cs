@@ -1,4 +1,6 @@
-﻿using System;
+﻿using HotelResrvationDesktopApp.Models;
+using HotelResrvationDesktopApp.ViewModels.Commands;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -43,7 +45,7 @@ namespace HotelResrvationDesktopApp.ViewModels
         }
 
 
-        private DateTime _startDate;
+        private DateTime _startDate = DateTime.UtcNow;
         public DateTime StartDate
         {
             get { return _startDate; }
@@ -55,7 +57,7 @@ namespace HotelResrvationDesktopApp.ViewModels
         }
 
 
-        private DateTime _endDate;
+        private DateTime _endDate = DateTime.UtcNow;
         public DateTime EndDate
         {
             get { return _endDate; }
@@ -69,9 +71,10 @@ namespace HotelResrvationDesktopApp.ViewModels
         public ICommand SubmitCommand { get; }
         public ICommand CancelCommand { get; }
 
-        public MakeReservationViewModel()
+        public MakeReservationViewModel(Hotel hotel)
         {
-
+            SubmitCommand = new MakeReservationCommand(this,hotel);
+            CancelCommand = new CancelMakeReservationCommand();
         }
     }
 }

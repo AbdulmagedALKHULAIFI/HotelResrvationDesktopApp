@@ -1,4 +1,5 @@
 ﻿using HotelResrvationDesktopApp.Models;
+using HotelResrvationDesktopApp.ViewModels.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -20,6 +21,8 @@ namespace HotelResrvationDesktopApp.ViewModels
         public ReservationListingViewModel()
         {
             _reservations = new ObservableCollection<ReservationViewModel>();
+
+            MakeReservationCommand = new NavigateCommand();
 
             _reservations.Add(new ReservationViewModel(new Reservation(new Room(1, 2), "Majid", DateTime.UtcNow, DateTime.UtcNow)));
             _reservations.Add(new ReservationViewModel(new Reservation(new Room(2, 3), "Kévin", DateTime.UtcNow, DateTime.UtcNow)));
