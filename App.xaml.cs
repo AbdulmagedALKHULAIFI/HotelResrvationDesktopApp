@@ -1,5 +1,6 @@
 ﻿using HotelResrvationDesktopApp.Exceptions;
 using HotelResrvationDesktopApp.Models;
+using HotelResrvationDesktopApp.Stores;
 using HotelResrvationDesktopApp.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -17,20 +18,35 @@ namespace HotelResrvationDesktopApp
     public partial class App : Application
     {
         private readonly Hotel _hotel;
-
+        private readonly NavigationStore _navigationStore;
         public App()
         {
             _hotel = new Hotel("Ibis");
+            _navigationStore = new NavigationStore();
         }
         protected override void OnStartup(StartupEventArgs e)
         {
+            _navigationStore.CurrentviewModel = CreateReservationViewModel();
+
             MainWindow = new MainWindow()
             {
-                DataContext = new MainViewModel(_hotel)
+                DataContext = new MainViewModel(_navigationStore)
             };
 
             MainWindow.Show();
             base.OnStartup(e);  
         }
+
+        private MakeReservationViewModel CreateMakeReservationViewModel()
+        {
+            return new MakeReservationViewModel(_hotel,_navigationStore, CreateReservationViewModel);
+        }
+
+        private ReservationListingViewModel CreateReservationViewModel()
+        {
+            return new ReservationListingViewModel(_navigationStore, CreateMakeReservationViewModel);
+        }
+
+        //ToDo: stopped at the end of abstracting navigation command video 5
     }
 }
