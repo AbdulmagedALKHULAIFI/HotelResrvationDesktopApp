@@ -1,5 +1,6 @@
 ﻿using HotelResrvationDesktopApp.Exceptions;
 using HotelResrvationDesktopApp.Models;
+using HotelResrvationDesktopApp.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,10 +14,14 @@ namespace HotelResrvationDesktopApp.ViewModels.Commands
     class MakeReservationCommand : CommandBase
     {
         private readonly Hotel _hotel;
+        private readonly NavigationService _reservationViewNavigationService;
         private readonly MakeReservationViewModel _makeReservationViewModel;
-        public MakeReservationCommand(MakeReservationViewModel makeReservationViewModel, Hotel hotel)
+        public MakeReservationCommand(MakeReservationViewModel makeReservationViewModel, 
+            Hotel hotel,
+            NavigationService reservationViewNavigationService)
         {
             _hotel = hotel;
+            _reservationViewNavigationService = reservationViewNavigationService;
             _makeReservationViewModel = makeReservationViewModel;
 
             //ToDo: read about this part "Subscription"
@@ -41,6 +46,7 @@ namespace HotelResrvationDesktopApp.ViewModels.Commands
             {
                 _hotel.MakeReservation(reservation);
                 MessageBox.Show("Successfully reserved room", "success", MessageBoxButton.OK, MessageBoxImage.Information);
+                _reservationViewNavigationService.Navigate();
             }
             catch (ReservationConflictException)
             {

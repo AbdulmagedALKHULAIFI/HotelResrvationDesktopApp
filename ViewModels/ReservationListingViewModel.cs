@@ -1,4 +1,5 @@
 ﻿using HotelResrvationDesktopApp.Models;
+using HotelResrvationDesktopApp.Services;
 using HotelResrvationDesktopApp.Stores;
 using HotelResrvationDesktopApp.ViewModels.Commands;
 using System;
@@ -15,19 +16,29 @@ namespace HotelResrvationDesktopApp.ViewModels
     {
         
         private readonly ObservableCollection<ReservationViewModel> _reservations;
+        private readonly Hotel _hotel;
 
         public IEnumerable<ReservationViewModel> Reservations => _reservations;
         public ICommand MakeReservationCommand { get;  }
 
-        public ReservationListingViewModel(NavigationStore navigationStore, Func<MakeReservationViewModel> createMakeReservationViewModel)
+        public ReservationListingViewModel(Hotel hotel, NavigationService MakeReservationViewService)
         {
             _reservations = new ObservableCollection<ReservationViewModel>();
+            _hotel = hotel;
+            MakeReservationCommand = new NavigateCommand(MakeReservationViewService);
 
-            MakeReservationCommand = new NavigateCommand(navigationStore,createMakeReservationViewModel);
+            UpdateReservations();
+        }
 
-            _reservations.Add(new ReservationViewModel(new Reservation(new Room(1, 2), "Majid", DateTime.UtcNow, DateTime.UtcNow)));
-            _reservations.Add(new ReservationViewModel(new Reservation(new Room(2, 3), "Kévin", DateTime.UtcNow, DateTime.UtcNow)));
-            _reservations.Add(new ReservationViewModel(new Reservation(new Room(5, 4), "Rafa", DateTime.UtcNow, DateTime.UtcNow)));
+        private void UpdateReservations()
+        {
+            _reservations.Clear();
+
+            foreach (var reservation in _hotel.GetallReservations())
+            {
+                ReservationViewModel reservationViewModel = new ReservationViewModel(reservation);
+                _reservations.Add(reservationViewModel);
+            }
         }
     }
 }

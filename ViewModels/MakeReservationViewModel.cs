@@ -1,4 +1,5 @@
 ﻿using HotelResrvationDesktopApp.Models;
+using HotelResrvationDesktopApp.Services;
 using HotelResrvationDesktopApp.Stores;
 using HotelResrvationDesktopApp.ViewModels.Commands;
 using System;
@@ -72,10 +73,10 @@ namespace HotelResrvationDesktopApp.ViewModels
         public ICommand SubmitCommand { get; }
         public ICommand CancelCommand { get; }
 
-        public MakeReservationViewModel(Hotel hotel, NavigationStore navigationStore, Func<ReservationListingViewModel> createReservationViewModel)
+        public MakeReservationViewModel(Hotel hotel, NavigationService reservationViewNavigationService)
         {
-            SubmitCommand = new MakeReservationCommand(this,hotel);
-            CancelCommand = new NavigateCommand(navigationStore,createReservationViewModel);
+            SubmitCommand = new MakeReservationCommand(this,hotel, reservationViewNavigationService);
+            CancelCommand = new NavigateCommand(reservationViewNavigationService);
         }
     }
 }

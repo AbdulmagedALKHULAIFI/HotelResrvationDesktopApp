@@ -1,5 +1,6 @@
 ﻿using HotelResrvationDesktopApp.Exceptions;
 using HotelResrvationDesktopApp.Models;
+using HotelResrvationDesktopApp.Services;
 using HotelResrvationDesktopApp.Stores;
 using HotelResrvationDesktopApp.ViewModels;
 using System;
@@ -39,12 +40,12 @@ namespace HotelResrvationDesktopApp
 
         private MakeReservationViewModel CreateMakeReservationViewModel()
         {
-            return new MakeReservationViewModel(_hotel,_navigationStore, CreateReservationViewModel);
+            return new MakeReservationViewModel(_hotel, new NavigationService(_navigationStore, CreateReservationViewModel));
         }
 
         private ReservationListingViewModel CreateReservationViewModel()
         {
-            return new ReservationListingViewModel(_navigationStore, CreateMakeReservationViewModel);
+            return new ReservationListingViewModel(_hotel, new NavigationService(_navigationStore, CreateMakeReservationViewModel));
         }
 
         //ToDo: stopped at the end of abstracting navigation command video 5
