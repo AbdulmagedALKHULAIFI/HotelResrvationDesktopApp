@@ -1,8 +1,10 @@
-﻿using HotelResrvationDesktopApp.Exceptions;
+﻿using HotelResrvationDesktopApp.DbContexts;
+using HotelResrvationDesktopApp.Exceptions;
 using HotelResrvationDesktopApp.Models;
 using HotelResrvationDesktopApp.Services;
 using HotelResrvationDesktopApp.Stores;
 using HotelResrvationDesktopApp.ViewModels;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -18,6 +20,7 @@ namespace HotelResrvationDesktopApp
     /// </summary>
     public partial class App : Application
     {
+        private const string ConnectionString = "Data Source=reservoom.db";
         private readonly Hotel _hotel;
         private readonly NavigationStore _navigationStore;
         public App()
@@ -27,6 +30,13 @@ namespace HotelResrvationDesktopApp
         }
         protected override void OnStartup(StartupEventArgs e)
         {
+            DbContextOptions options = new DbContextOptionsBuilder().UseSqlite(ConnectionString).Options;
+
+            using (ReservoomDbContext dbContext = new ReservoomDbContext(options))
+            {
+                dbContext.Database.Migrate();
+            }
+
             _navigationStore.CurrentviewModel = CreateReservationViewModel();
 
             MainWindow = new MainWindow()
@@ -48,6 +58,6 @@ namespace HotelResrvationDesktopApp
             return new ReservationListingViewModel(_hotel, new NavigationService(_navigationStore, CreateMakeReservationViewModel));
         }
 
-        //ToDo: stopped at the end of abstracting navigation command video 5
+        //ToDo: stopped video 6 before beginning of "updating the app.xaml.cs setup 
     }
 }
