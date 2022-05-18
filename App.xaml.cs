@@ -2,6 +2,9 @@
 using HotelResrvationDesktopApp.Exceptions;
 using HotelResrvationDesktopApp.Models;
 using HotelResrvationDesktopApp.Services;
+using HotelResrvationDesktopApp.Services.ReservationConflictValidators;
+using HotelResrvationDesktopApp.Services.ReservationCreators;
+using HotelResrvationDesktopApp.Services.ReservationProviders;
 using HotelResrvationDesktopApp.Stores;
 using HotelResrvationDesktopApp.ViewModels;
 using Microsoft.EntityFrameworkCore;
@@ -23,16 +26,26 @@ namespace HotelResrvationDesktopApp
         private const string ConnectionString = "Data Source=reservoom.db";
         private readonly Hotel _hotel;
         private readonly NavigationStore _navigationStore;
+        private IReservationProvider reservationProvider;
+        private IReservationCreator reservationCreator;
+        private IReservationConflictValidator reservationConflictValidator;
+        ReservoomDbContexFactory reservoomDbContexFactory;
+      
         public App()
         {
-            _hotel = new Hotel("Ibis");
+            reservoomDbContexFactory = new ReservoomDbContexFactory(ConnectionString);
+
+            reservationProvider = new ReservationProvider(reservoomDbContexFactory);
+            reservationCreator = new ReservationCreator(reservoomDbContexFactory);
+            reservationConflictValidator = new ReservationReservationValidator(reservoomDbContexFactory);
+
+            ReservationBook reservationBook = new ReservationBook(reservationProvider, reservationCreator, reservationConflictValidator);
+            _hotel = new Hotel("Ibis",reservationBook);
             _navigationStore = new NavigationStore();
         }
         protected override void OnStartup(StartupEventArgs e)
         {
-            DbContextOptions options = new DbContextOptionsBuilder().UseSqlite(ConnectionString).Options;
-
-            using (ReservoomDbContext dbContext = new ReservoomDbContext(options))
+            using (ReservoomDbContext dbContext = reservoomDbContexFactory.CreateDbContext())
             {
                 dbContext.Database.Migrate();
             }
@@ -55,7 +68,7 @@ namespace HotelResrvationDesktopApp
 
         private ReservationListingViewModel CreateReservationViewModel()
         {
-            return new ReservationListingViewModel(_hotel, new NavigationService(_navigationStore, CreateMakeReservationViewModel));
+            return ReservationListingViewModel.LoadViewModel(_hotel, new NavigationService(_navigationStore, CreateMakeReservationViewModel));
         }
 
         //ToDo: stopped video 6 before beginning of "updating the app.xaml.cs setup 

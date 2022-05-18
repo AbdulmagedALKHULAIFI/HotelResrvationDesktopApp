@@ -12,29 +12,38 @@ using System.Windows.Input;
 
 namespace HotelResrvationDesktopApp.ViewModels
 {
-    class ReservationListingViewModel : ViewModelBase
+    public class ReservationListingViewModel : ViewModelBase
     {
         
         private readonly ObservableCollection<ReservationViewModel> _reservations;
-        private readonly Hotel _hotel;
 
         public IEnumerable<ReservationViewModel> Reservations => _reservations;
+
+        public ICommand LoadReservationsCommand { get; }
         public ICommand MakeReservationCommand { get;  }
 
         public ReservationListingViewModel(Hotel hotel, NavigationService MakeReservationViewService)
         {
             _reservations = new ObservableCollection<ReservationViewModel>();
-            _hotel = hotel;
-            MakeReservationCommand = new NavigateCommand(MakeReservationViewService);
 
-            UpdateReservations();
+            LoadReservationsCommand = new LoadReservationsCommand(this, hotel);
+            MakeReservationCommand = new NavigateCommand(MakeReservationViewService);
         }
 
-        private void UpdateReservations()
+        public static ReservationListingViewModel LoadViewModel(Hotel hotel, NavigationService MakeReservationViewService)
+        {
+            ReservationListingViewModel viewModel = new ReservationListingViewModel(hotel, MakeReservationViewService);
+
+            viewModel.LoadReservationsCommand.Execute(null);
+
+            return viewModel;
+        }
+
+        public void UpdateReservations(IEnumerable<Reservation> reservations)
         {
             _reservations.Clear();
 
-            foreach (var reservation in _hotel.GetallReservations())
+            foreach (var reservation in reservations)
             {
                 ReservationViewModel reservationViewModel = new ReservationViewModel(reservation);
                 _reservations.Add(reservationViewModel);

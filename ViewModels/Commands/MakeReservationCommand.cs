@@ -11,7 +11,7 @@ using System.Windows;
 
 namespace HotelResrvationDesktopApp.ViewModels.Commands
 {
-    class MakeReservationCommand : CommandBase
+    class MakeReservationCommand : AsyncCommandbase
     {
         private readonly Hotel _hotel;
         private readonly NavigationService _reservationViewNavigationService;
@@ -34,7 +34,7 @@ namespace HotelResrvationDesktopApp.ViewModels.Commands
                 _makeReservationViewModel.FloorNumber > 0 && 
                 base.CanExecute(parameter);
         }
-        public override void Execute(object parameter)
+        public override async Task ExecuteAsync(object parameter)
         {
             Reservation reservation = new(
                 new Room(_makeReservationViewModel.FloorNumber, _makeReservationViewModel.RoomNumber),
@@ -44,13 +44,18 @@ namespace HotelResrvationDesktopApp.ViewModels.Commands
 
             try
             {
-                _hotel.MakeReservation(reservation);
+                await _hotel.MakeReservation(reservation);
                 MessageBox.Show("Successfully reserved room", "success", MessageBoxButton.OK, MessageBoxImage.Information);
                 _reservationViewNavigationService.Navigate();
             }
             catch (ReservationConflictException)
             {
                 MessageBox.Show("This room is already taken", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Failde to make a reservation", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
             }
         }
 

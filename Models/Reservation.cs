@@ -22,12 +22,5 @@ namespace HotelResrvationDesktopApp.Models
             StartTime = startTime;
             EndTime = endTime;
         }
-
-        public bool Conflicts(Reservation reservation)
-        {
-            if (reservation.Room.Equals(Room))
-                return false;
-            return reservation.StartTime < EndTime && reservation.EndTime > StartTime;
-        }
     }
 }

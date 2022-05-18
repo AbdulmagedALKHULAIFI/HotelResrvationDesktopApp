@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace HotelResrvationDesktopApp.Services.ReservationCreators
 {
-    public class DatabaseReservationCreator : IReservationCreator
+    public class ReservationCreator : IReservationCreator
     {
         private readonly ReservoomDbContexFactory _dbContextFactory;
 
-        public DatabaseReservationCreator(ReservoomDbContexFactory dbContextFactory)
+        public ReservationCreator(ReservoomDbContexFactory dbContextFactory)
         {
             _dbContextFactory = dbContextFactory;
         }

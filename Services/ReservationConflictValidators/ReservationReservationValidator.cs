@@ -23,7 +23,17 @@ namespace HotelResrvationDesktopApp.Services.ReservationConflictValidators
         {
             using (ReservoomDbContext context = _dbContextFactory.CreateDbContext())
             {
-                return await context.Reservations.Select(r => ToReservation(r)).FirstOrDefaultAsync(r => r.Conflicts(reservation));
+                ReservationDTO reservationDTO =  await context.Reservations
+                    .Where(r => r.FloorNumber == reservation.Room.FloorNumber)
+                    .Where(r => r.RoomNumber== reservation.Room.RoomNumber)
+                    .Where(r => r.EndTime > reservation.StartTime)
+                    .Where(r => r.StartTime < reservation.EndTime)
+                    .FirstOrDefaultAsync();
+
+                if (reservationDTO == null)
+                    return null;
+
+                return ToReservation(reservationDTO);
             }
         }
 
