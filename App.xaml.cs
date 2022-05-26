@@ -25,6 +25,7 @@ namespace HotelResrvationDesktopApp
     {
         private const string ConnectionString = "Data Source=reservoom.db";
         private readonly Hotel _hotel;
+        private readonly HotelStore _hotelStore;
         private readonly NavigationStore _navigationStore;
         private IReservationProvider reservationProvider;
         private IReservationCreator reservationCreator;
@@ -40,7 +41,8 @@ namespace HotelResrvationDesktopApp
             reservationConflictValidator = new ReservationReservationValidator(reservoomDbContexFactory);
 
             ReservationBook reservationBook = new ReservationBook(reservationProvider, reservationCreator, reservationConflictValidator);
-            _hotel = new Hotel("Ibis",reservationBook);
+            _hotel = new Hotel("Ibis", reservationBook);
+            _hotelStore = new HotelStore(_hotel);
             _navigationStore = new NavigationStore();
         }
         protected override void OnStartup(StartupEventArgs e)
@@ -63,12 +65,12 @@ namespace HotelResrvationDesktopApp
 
         private MakeReservationViewModel CreateMakeReservationViewModel()
         {
-            return new MakeReservationViewModel(_hotel, new NavigationService(_navigationStore, CreateReservationViewModel));
+            return new MakeReservationViewModel(_hotelStore, new NavigationService(_navigationStore, CreateReservationViewModel));
         }
 
-        private ReservationListingViewModel CreateReservationViewModel()
+        private ReservationListViewModel CreateReservationViewModel()
         {
-            return ReservationListingViewModel.LoadViewModel(_hotel, new NavigationService(_navigationStore, CreateMakeReservationViewModel));
+            return ReservationListViewModel.LoadViewModel(_hotelStore, CreateMakeReservationViewModel() ,new NavigationService(_navigationStore, CreateMakeReservationViewModel));
         }
 
         //ToDo: stopped video 6 before beginning of "updating the app.xaml.cs setup 

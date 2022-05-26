@@ -14,7 +14,8 @@ namespace HotelResrvationDesktopApp.Stores
         public ViewModelBase CurrentviewModel
         {
             get => _currentViewModel; 
-            set { 
+            set {
+                _currentViewModel?.Dispose();
                 _currentViewModel = value;
                 OnCurrentViewModelChanged();
             }

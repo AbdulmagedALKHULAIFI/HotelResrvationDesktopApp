@@ -1,4 +1,5 @@
 ﻿using HotelResrvationDesktopApp.Models;
+using HotelResrvationDesktopApp.Stores;
 using HotelResrvationDesktopApp.ViewModels.Commands;
 using System;
 using System.Collections.Generic;
@@ -12,12 +13,12 @@ namespace HotelResrvationDesktopApp.ViewModels
     public class LoadReservationsCommand : AsyncCommandbase
     {
        
-        private readonly ReservationListingViewModel _viewModel;
-        private readonly Hotel _hotel;
+        private readonly ReservationListViewModel _viewModel;
+        private readonly HotelStore _hotelStore;
 
-        public LoadReservationsCommand(ReservationListingViewModel viewModel, Hotel hotel)
+        public LoadReservationsCommand(ReservationListViewModel viewModel, HotelStore hotelStore)
         {
-            _hotel = hotel;
+            _hotelStore = hotelStore;
             _viewModel = viewModel;
         }
 
@@ -25,8 +26,8 @@ namespace HotelResrvationDesktopApp.ViewModels
         {
             try
             {
-                IEnumerable<Reservation> reservations = await _hotel.GetallReservations();
-                _viewModel.UpdateReservations(reservations);
+                await _hotelStore.Load();
+                _viewModel.UpdateReservations(_hotelStore.Reservations);
             }
             catch (Exception)
             {
