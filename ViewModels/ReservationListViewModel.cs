@@ -18,6 +18,19 @@ namespace HotelResrvationDesktopApp.ViewModels
         private readonly ObservableCollection<ReservationViewModel> _reservations;
         private HotelStore _hotelStore;
 
+        private bool _isLoading;
+
+        public bool IsLoading
+        {
+            get { return _isLoading; }
+            set 
+            { 
+                _isLoading = value;
+                OnPropertyChanged(nameof(IsLoading));
+            }
+        }
+
+
         public IEnumerable<ReservationViewModel> Reservations => _reservations;
 
         public ICommand LoadReservationsCommand { get; }

@@ -73,6 +73,6 @@ namespace HotelResrvationDesktopApp
             return ReservationListViewModel.LoadViewModel(_hotelStore, CreateMakeReservationViewModel() ,new NavigationService(_navigationStore, CreateMakeReservationViewModel));
         }
 
-        //ToDo: stopped video 6 before beginning of "updating the app.xaml.cs setup 
+        //ToDo: stopped video 8 2:45 before beginning of "Converters"
     }
 }

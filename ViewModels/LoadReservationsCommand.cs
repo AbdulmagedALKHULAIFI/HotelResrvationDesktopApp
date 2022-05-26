@@ -24,6 +24,7 @@ namespace HotelResrvationDesktopApp.ViewModels
 
         public override async Task ExecuteAsync(object parameter)
         {
+            _viewModel.IsLoading = true;
             try
             {
                 await _hotelStore.Load();
@@ -33,6 +34,8 @@ namespace HotelResrvationDesktopApp.ViewModels
             {
                 MessageBox.Show("Failed to load the reservations.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+
+            _viewModel.IsLoading = false;
         }
     }
 }
