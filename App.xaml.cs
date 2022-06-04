@@ -73,6 +73,6 @@ namespace HotelResrvationDesktopApp
             return ReservationListViewModel.LoadViewModel(_hotelStore, CreateMakeReservationViewModel() ,new NavigationService(_navigationStore, CreateMakeReservationViewModel));
         }
 
-        //ToDo: stopped video 8 2:45 before beginning of "Converters"
+        //ToDo: stopped:  finished video 8
     }
 }

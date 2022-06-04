@@ -24,15 +24,17 @@ namespace HotelResrvationDesktopApp.ViewModels
 
         public override async Task ExecuteAsync(object parameter)
         {
+            _viewModel.ErrorMessage = string.Empty;
             _viewModel.IsLoading = true;
             try
             {
                 await _hotelStore.Load();
+
                 _viewModel.UpdateReservations(_hotelStore.Reservations);
             }
             catch (Exception)
             {
-                MessageBox.Show("Failed to load the reservations.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                _viewModel.ErrorMessage = "Failed to load the reservations.";
             }
 
             _viewModel.IsLoading = false;

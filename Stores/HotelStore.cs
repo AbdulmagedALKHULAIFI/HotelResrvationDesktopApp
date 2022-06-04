@@ -11,7 +11,7 @@ namespace HotelResrvationDesktopApp.Stores
     {
         private readonly Hotel _hotel;
         private List<Reservation> _reservations;
-        private readonly Lazy<Task> _initializeLazy;
+        private Lazy<Task> _initializeLazy;
         public event Action<Reservation> reservationMade;
 
         public IEnumerable<Reservation> Reservations => _reservations;
@@ -25,7 +25,15 @@ namespace HotelResrvationDesktopApp.Stores
 
         public async Task Load()
         {
-            await _initializeLazy.Value;
+            try
+            {
+                await _initializeLazy.Value;
+            }
+            catch (Exception)
+            {
+                _initializeLazy = new Lazy<Task>(Initialize);
+                throw;
+            }
         }
 
         public async Task MakeReservation(Reservation reservation)
